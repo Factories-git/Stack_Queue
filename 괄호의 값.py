@@ -1,7 +1,7 @@
 string = input().strip()
 string += ' '
 re = 0
-expression = []
+expression = 0
 stack = []
 check = True
 pass_ = set()
@@ -11,19 +11,19 @@ for i in range(len(string)-1):
     if m == '(' or m == '[':
         stack.append(m)
         if m == '(' and string[i+1] == ')':
-            expression.append(2)
+            expression += 2
             pass_.add(i+1)
         elif m == '[' and string[i+1] == ']':
-            expression.append(3)
+            expression += 3
             pass_.add(i+1)
     elif m == ')':
         if stack and stack[-1] == '(':
             stack.pop()
             if i not in pass_:
-                expression[-1] *= 2
+                expression *= 2
             if (string[i+1] == '(' or string[i+1] == '[') and not stack:
-                re += sum(expression)
-                expression = []
+                re += expression
+                expression = 0
         else:
             check = False
             break
@@ -31,13 +31,13 @@ for i in range(len(string)-1):
         if stack and stack[-1] == '[':
             stack.pop()
             if i not in pass_:
-                expression[-1] *= 3
+                expression *= 3
             if (string[i+1] == '(' or string[i+1] == '[') and not stack:
-                re += sum(expression)
-                expression = []
+                re += expression
+                expression = 0
         else:
             check = False
             break
-    print(expression, re)
-re += sum(expression)
+
+re += expression
 print(f'{re if check and not stack else 0}')
