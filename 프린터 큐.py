@@ -5,14 +5,16 @@ input = sys.stdin.readline
 
 for _ in range(int(input())):
     n, m = map(int, input().split())
-    importance = deque(map(int, input().split()))
-    i = -1
-    print(n,m)
-    while importance:
-        print(i)
-        if importance[i] == max(importance):
-            importance.popleft()
-            if i == m:
-                print(i+1)
+    importance = list(map(int, input().split()))
+    copy_impo = sorted(importance.copy())
+    new_importance = deque([idx, i] for idx, i in enumerate(importance))
+    i = 0
+    order = []
+    while copy_impo:
+        if new_importance[0][1] == copy_impo[-1]:
+            copy_impo.pop()
+            s = new_importance.popleft()
+            order.append(s[0])
         else:
-            importance.append(importance.popleft())
+            new_importance.append(new_importance.popleft())
+    print(order.index(m)+1)
