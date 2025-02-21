@@ -1,10 +1,6 @@
-"""
-10% 오답
-"""
-
 import sys
 
-sys.setrecursionlimit(10 ** 6)
+sys.setrecursionlimit(10 ** 7)
 input = sys.stdin.readline
 
 
@@ -42,6 +38,7 @@ for _ in range(1, int(input()) + 1):
         ipts += ipt
     dic = my_while(ipts)
     if dic is False:
+        print(f'PROGRAM #{_}:')
         print('COMPILE ERROR')
         continue
     idx = 0
@@ -64,4 +61,5 @@ for _ in range(1, int(input()) + 1):
             if memory[pointer] != 0:
                 idx = dic[idx]
         idx += 1
+    print(f'PROGRAM #{_}:')
     print(''.join(s) if not flag else '')
