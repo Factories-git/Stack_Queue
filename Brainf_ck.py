@@ -52,9 +52,9 @@ for _ in range(1, int(input()) + 1):
         elif j == '<':
             pointer = (pointer - 1) % 32768
         elif j == '+':
-            memory[pointer] = (memory[pointer] + 1) % 255
+            memory[pointer] = (memory[pointer] + 1) % 256
         elif j == '-':
-            memory[pointer] = (memory[pointer] - 1) % 255
+            memory[pointer] = (memory[pointer] - 1) % 256
         elif j == '.':
             s.append(chr(memory[pointer]))
         elif j == '[':
