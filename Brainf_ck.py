@@ -8,39 +8,22 @@ sys.setrecursionlimit(10 ** 6)
 input = sys.stdin.readline
 
 
-def my_while(ptr, stack, idx):
-    s_idx = idx
-    global memory, s
-    stack.append(idx)
-    while True:
-        if idx == len(ipts):
-            if stack:
+def my_while(ipts):
+    stack = []
+    c = {}
+    for i, code in enumerate(ipts):
+        if code == '[':
+            stack.append(i)
+        if code == ']':
+            if not stack:
                 return False
-        j = ipts[idx]
+            st = stack.pop()
+            c[st] = i
+            c[i] = st
+    if stack:
+        return False
 
-        if j == '>':
-            ptr = (ptr + 1) % 32768
-        elif j == '<':
-            ptr = (ptr - 1) % 32768
-        elif j == '+':
-            memory[ptr] = (memory[ptr] + 1) % 255
-        elif j == '-':
-            memory[ptr] = (memory[ptr] - 1) % 255
-        elif j == '.':
-            s.append(chr(memory[ptr]))
-        elif j == '[':
-            if s_idx != idx:
-                my_while(ptr, stack, idx)
-            else:
-                return False
-        elif j == ']':
-            if memory[ptr] == 1:
-                stack.pop()
-                return True
-            else:
-                idx = stack[-1]
-                continue
-        idx += 1
+    return c
 
 
 for _ in range(1, int(input()) + 1):
@@ -57,7 +40,13 @@ for _ in range(1, int(input()) + 1):
         rf = ipt.rfind('%')
         ipt = ipt[:rf if rf != -1 else None]
         ipts += ipt
-    for idx, j in enumerate(ipts):
+    dic = my_while(ipts)
+    if dic is False:
+        print('COMPILE ERROR')
+        continue
+    idx = 0
+    while idx < len(ipts):
+        j = ipts[idx]
         if j == '>':
             pointer = (pointer + 1) % 32768
         elif j == '<':
@@ -69,20 +58,10 @@ for _ in range(1, int(input()) + 1):
         elif j == '.':
             s.append(chr(memory[pointer]))
         elif j == '[':
-            if idx == len(ipts):
-                print('COMPILE ERROR')
-                flag = True
-                break
-            k = my_while(pointer, [], idx + 1)
-            re.append(idx + 1)
-            if not k:
-                print('COMPILE ERROR')
-                flag = True
-                break
-            continue
+            if memory[pointer] == 0:
+                idx = dic[idx]
         elif j == ']':
-            if not re:
-                print('COMPILE ERROR')
-                flag = True
-
+            if memory[pointer] != 0:
+                idx = dic[idx]
+        idx += 1
     print(''.join(s) if not flag else '')
