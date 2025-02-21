@@ -1,3 +1,7 @@
+"""
+시간초과
+"""
+
 import sys
 
 sys.setrecursionlimit(10 ** 6)
